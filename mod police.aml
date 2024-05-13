@@ -1,0 +1,145 @@
+<AML>
+    <Name>POLICE_MOD</Name>
+    <Version>1.0</Version>
+    <Author>SeuNome</Author>
+
+    <!-- Definição de veículos de emergência -->
+    <VehicleID>
+        <Name>Ambulância</Name>
+        <ID>416</ID>
+    </VehicleID>
+
+    <VehicleID>
+        <Name>Caminhão de Bombeiros (FIRELA)</Name>
+        <ID>544</ID>
+    </VehicleID>
+
+    <VehicleID>
+        <Name>Caminhão de Bombeiros (Fire Truck)</Name>
+        <ID>407</ID>
+    </VehicleID>
+
+    <VehicleID>
+        <Name>Veículos de Emergência da Polícia</Name>
+        <IDs>
+            <ID>596</ID> <!-- FBI Car -->
+            <ID>490</ID> <!-- FBI Rancher -->
+            <ID>528</ID> <!-- FBI Truck -->
+            <!-- Adicione aqui outros IDs de veículos de emergência da polícia -->
+        </IDs>
+    </VehicleID>
+
+    <!-- Definição de policiais -->
+    <PedID>
+        <Name>Policiais</Name>
+        <IDs>
+            <ID>280</ID> <!-- LAPD 1 -->
+            <ID>281</ID> <!-- LAPD 2 -->
+            <ID>282</ID> <!-- LAPD 3 -->
+            <ID>283</ID> <!-- SWAT 1 -->
+            <ID>284</ID> <!-- SWAT 2 -->
+            <ID>285</ID> <!-- FBI 1 -->
+            <ID>286</ID> <!-- FBI 2 -->
+            <ID>287</ID> <!-- ARMY 1 -->
+            <ID>288</ID> <!-- ARMY 2 -->
+            <!-- Adicione aqui outros IDs de policiais -->
+        </IDs>
+    </PedID>
+
+    <!-- Definição de gangues -->
+    <PedID>
+        <Name>Gangues</Name>
+        <IDs>
+            <ID>105</ID> <!-- Grove Street -->
+            <ID>106</ID> <!-- Grove Street -->
+            <ID>107</ID> <!-- Grove Street -->
+            <ID>102</ID> <!-- Ballas -->
+            <ID>103</ID> <!-- Ballas -->
+            <ID>104</ID> <!-- Ballas -->
+            <ID>108</ID> <!-- Vagos -->
+            <ID>109</ID> <!-- Vagos -->
+            <ID>110</ID> <!-- Vagos -->
+            <!-- Adicione aqui outros IDs de gangues -->
+        </IDs>
+    </PedID>
+
+    <!-- Definição de outros peds -->
+    <PedID>
+        <Name>Outros Peds</Name>
+        <IDs>
+            <!-- Adicione aqui outros IDs de peds -->
+        </IDs>
+    </PedID>
+
+    <!-- Thread principal -->
+    <Thread>
+        <Name>POLICE_MOD_THREAD</Name>
+
+        <!-- Loop principal -->
+        <MainLoop>
+            <!-- Verificar se o jogador está definido e se está dirigindo um veículo -->
+            <Action>
+                <PlayerExists />
+                <VehicleExists />
+            </Action>
+
+            <!-- Verificar se o veículo é um veículo de emergência -->
+            <If>
+                <And>
+                    <PlayerDrivingVehicle />
+                    <Or>
+                        <VehicleType value="#Ambulância" />
+                        <VehicleType value="#Caminhão de Bombeiros (FIRELA)" />
+                        <VehicleType value="#Caminhão de Bombeiros (Fire Truck)" />
+                        <VehicleType value="#Veículos de Emergência da Polícia" />
+                    </Or>
+                </And>
+            </If>
+
+            <!-- Chamar a função responsável pelo evento de emergência adequado -->
+            <Then>
+                <Gosub>
+                    <Label>EMERGENCY_EVENT</Label>
+                </Gosub>
+            </Then>
+        </MainLoop>
+    </Thread>
+
+    <!-- Função para eventos de emergência -->
+    <Label>
+        <Name>EMERGENCY_EVENT</Name>
+
+        <!-- Verificar qual tipo de veículo de emergência o jogador está dirigindo -->
+        <If>
+            <PlayerDrivingVehicle />
+            <VehicleType value="#Ambulância" />
+        </If>
+
+        <!-- Chamar a função correspondente ao tipo de veículo -->
+        <Then>
+            <Gosub>
+                <Label>AMBULANCE_EVENT</Label>
+            </Gosub>
+        </Then>
+
+        <Else>
+            <Goto>
+                <Label>FIRETRUCK_EVENT</Label>
+            </Goto>
+        </Else>
+    </Label>
+
+    <!-- Função para o evento da ambulância -->
+    <Label>
+        <Name>AMBULANCE_EVENT</Name>
+        <!-- Coloque aqui o código para o evento da ambulância -->
+        
+        <!-- Adicionar evento no mapa -->
+        <MapEvent>
+            <Name>Localização da Ocorrência</Name>
+            <Type>Emergency</Type>
+            <Position>
+                <!-- Coordenadas da localização da ocorrência (baseadas na posição atual do jogador) -->
+                <PlayerPosition />
+            </Position>
+        </MapEvent
